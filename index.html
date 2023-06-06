@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Type</title>
+</head>
+<body>
+    <div>
+        Type the following into the box.
+        <hr>
+        A data entry clerk is a member of staff employed to enter or update data into a computer system. Data is often entered into a computer from paper documents using a keyboard. The keyboards used can often have special keys and multiple colors to help in the task and speed up the work. Proper ergonomics at the workstation is a common topic considered. The Data Entry Clerk may also use a mouse, and a manually-fed scanner may be involved. Speed and accuracy, not necessarily in that order, are the key measures of the job; it is possible to do this job from home.
+    </div>
+    <br>
+    <textarea id="text"></textarea>
+    <br>
+    <button id="submit" onclick="submit()">Submit</button>
+    <br>
+    <h1 id="time">0</h1>
+    <br>
+    <br>
+    <br>
+    <div id="box"></div>
+    
+	<script>
+        let val = "";
+        let started = false;
+        let timer = 1;
+        let interval;
+        let responses = [
+            // " I like kissing boys ",
+            // " I'm gay ",
+            // " uwu ",
+            " I am very stupid and gullible and fell for this trick ",
+        ];
+
+        addEventListener("keydown", (event) => {
+            if(!started){
+                started = true;
+                interval = setInterval(function () {time.innerHTML = timer; timer++}, 1000);
+            }
+            if(event.keyCode >= 32 && event.keyCode <= 126){
+                val += event.key;
+            }
+            else if (event.keyCode == 8)
+                val = val.slice(0,-1);
+            text.value = "";
+        });
+
+        function submit(){
+            clearInterval(interval);
+            console.log(val)
+            let response = find(val.length);
+            if(response == ""){
+                box.innerHTML = "Let's see what you typed!: <br><br><hr> " + val;
+                return;
+            }
+            let range = val.length - response.length;
+            let index = Math.floor(Math.random() * range);
+            
+            val = val.substring(0, index) + response + val.substring(index+response.length);
+            box.innerHTML = "Let's see what you typed!: <br><br><hr> " + val;
+        }
+
+        function find(num){
+            let max = 0;
+            let maxIndex = -1;
+            for(i = 0; i < responses.length; i++){
+                if(responses[i].length > max && responses[i].length < num){
+                    max = responses[i].length;
+                    maxIndex = i;
+                }
+            }
+            if(maxIndex == -1)
+                return "";
+            return responses[maxIndex];
+        }
+
+	</script>
+    
+</body>
+</html>
